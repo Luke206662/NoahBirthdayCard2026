@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday!</title>
+  
+  <!-- CSS Link -->
+  <link rel="stylesheet" href="style.css" />
+  
+  <!-- Confetti Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+</head>
+<body>
+  <div id="update-popup" class="popup-overlay" role="dialog" aria-modal="true" aria-labelledby="update-title">
+    <div class="popup-card update-popup-card">
+      <div class="update-app-icon" aria-hidden="true">
+        <span class="update-monitor">
+          <span class="update-download-arrow"></span>
+        </span>
+      </div>
+      <div class="update-heading">
+        <span class="update-eyebrow">Caution</span>
+        <h2 id="update-title">Yearly Update Available</h2>
+        <p>Version 21 &nbsp;•&nbsp; Required</p>
+      </div>
+      <div class="update-details">
+        <p>Please update to your latest version.</p>
+        <div class="update-progress hidden" aria-live="polite">
+          <div class="update-progress-label">
+            <span id="update-status">Preparing download...</span>
+            <strong id="update-percent">0%</strong>
+          </div>
+          <div class="update-progress-track" role="progressbar" aria-label="Update download progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div id="update-progress-fill" class="update-progress-fill"></div>
+          </div>
+        </div>
+      </div>
+      <button id="update-download-btn" class="update-download-btn" type="button">Download</button>
+    </div>
+  </div>
+
+  <!-- Floating Streamers Background -->
+  <div class="streamer-container">
+    <div class="streamer s1"></div>
+    <div class="streamer s2"></div>
+    <div class="streamer s3"></div>
+    <div class="streamer s4"></div>
+  </div>
+
+  <main class="card-container card-locked">
+    
+    <!-- Header Section -->
+    <header>
+      <span class="badge">To My Favourite Brother...</span>
+      <h1 id="hero-title"><span class="highlight">Happy Birthday!</span></h1>
+    </header>
+
+    <!-- Photo Section -->
+    <section class="photo-section">
+      <img id="main-photo" src="./Noah/NoahBirthdayEdited.png" alt="Birthday Boy" />
+      <figcaption id="photo-caption">The power of Canva.</figcaption>
+    </section>
+
+    <!-- Interactive Buttons -->
+    <section class="actions">
+      <button id="slap-btn" class="btn primary-btn" type="button">👋 Slap the photo 👋</button>
+      <div class="slap-counter" aria-live="polite">
+        <span class="slap-counter-label">Total slaps:</span>
+        <span id="slap-count">0</span>
+      </div>
+    </section>
+
+    <!-- New Photo Album Section -->
+    <section class="album-section" aria-label="Photo album">
+      <div class="section-heading">
+        <span class="mini-title">The Photo Album</span>
+        <h2>Your Finest Moments On Camera!</h2>
+        <p class="album-subtitle">Like looking in a mirror...</p>
+      </div>
+
+      <div class="photo-carousel" data-carousel>
+        <button class="carousel-btn prev" aria-label="Previous photo">&#10094;</button>
+
+        <div class="carousel-track">
+          <figure class="slide active">
+            <img src="./Noah/Noah1.png" alt="Memory 1" />
+          </figure>
+          <figure class="slide">
+            <img src="./Noah/Noah2.jpeg" alt="Memory 2" />
+          </figure>
+          <figure class="slide">
+            <img src="./Noah/Noah3.JPG" alt="Memory 3" />
+          </figure>
+          <figure class="slide">
+            <img src="./Noah/Noah4.png" alt="Memory 4" />
+          </figure>
+          <figure class="slide">
+            <img src="./Noah/Noah5.jpg" alt="Memory 5" />
+          </figure>
+          <figure class="slide">
+            <img src="./Noah/Noah6.jpeg" alt="Memory 6" />
+          </figure>
+          <figure class="slide">
+            <img src="./Noah/Noah7.JPG" alt="Memory 7" />
+          </figure>
+          <figure class="slide">
+            <img src="./Noah/Noah8.JPG" alt="Memory 8" />
+          </figure>
+          <figure class="slide">
+            <img src="./Noah/Noah9.jpeg" alt="Memory 9" />
+          </figure>
+                    <figure class="slide">
+            <img src="./Noah/Noah10.jpeg" alt="Memory 9" />
+          </figure>
+                    <figure class="slide">
+            <img src="./Noah/Noah11.jpeg" alt="Memory 9" />
+          </figure>
+                    <figure class="slide">
+            <img src="./Noah/Noah12.jpeg" alt="Memory 9" />
+          </figure>
+                    <figure class="slide">
+            <img src="./Noah/Noah13.jpg" alt="Memory 9" />
+          </figure>
+                    <figure class="slide">
+            <img src="./Noah/Noah14.jpeg" alt="Memory 9" />
+          </figure>
+                    <figure class="slide">
+            <img src="./Noah/Noah15.jpeg" alt="Memory 9" />
+          </figure>
+                    <figure class="slide">
+            <img src="./Noah/Noah16.jpg" alt="Memory 9" />
+          </figure>
+                    <figure class="slide">
+            <img src="./Noah/Noah17.png" alt="Memory 9" />
+          </figure>
+        </div>
+
+        <button class="carousel-btn next" aria-label="Next photo">&#10095;</button>
+      </div>
+
+      <div class="carousel-dots" aria-label="Photo navigation">
+        <button class="dot active" data-index="0" aria-label="Go to photo 1"></button>
+        <button class="dot" data-index="1" aria-label="Go to photo 2"></button>
+        <button class="dot" data-index="2" aria-label="Go to photo 3"></button>
+        <button class="dot" data-index="3" aria-label="Go to photo 4"></button>
+      </div>
+    </section>
+
+    <!-- Mini Game Section -->
+    <section class="mini-game-section" aria-label="Mini game">
+      <div class="section-heading">
+        <span class="mini-title">No Wifi? No Problem!</span>
+        <h2>Take Digby for a walk!</h2>
+      </div>
+
+      <div class="game-box">
+        <canvas id="gameCanvas" width="1200" height="750" aria-label="Dino jump game"></canvas>
+      </div>
+    </section>
+
+    <!-- Countdown Section -->
+    <section class="countdown-section" aria-label="Life timeline countdowns">
+      <div class="section-heading">
+        <span class="mini-title">Life in Numbers</span>
+        <h2>That's a lot of seconds!</h2>
+      </div>
+
+      <div class="timeline-group">
+        <div class="timeline-panel">
+          <h3>Time since birth. 👶</h3>
+          <div class="countdown-grid countdown-grid-top">
+            <div class="countdown-card">
+              <span class="countdown-value" id="elapsed-years">0</span>
+              <span class="countdown-label">Years</span>
+            </div>
+            <div class="countdown-card">
+              <span class="countdown-value" id="elapsed-months">0</span>
+              <span class="countdown-label">Months</span>
+            </div>
+            <div class="countdown-card">
+              <span class="countdown-value" id="elapsed-days">0</span>
+              <span class="countdown-label">Days</span>
+            </div>
+          </div>
+
+          <div class="countdown-stack-list">
+            <div class="countdown-full-row">
+              <span class="countdown-value" id="elapsed-hours">0</span>
+              <span class="countdown-label">Hours</span>
+            </div>
+            <div class="countdown-full-row">
+              <span class="countdown-value" id="elapsed-minutes">0</span>
+              <span class="countdown-label">Minutes</span>
+            </div>
+            <div class="countdown-full-row">
+              <span class="countdown-value" id="elapsed-seconds">0</span>
+              <span class="countdown-label">Seconds</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-panel">
+          <h3>Time till death. 💀</h3>
+          <div class="countdown-grid countdown-grid-top">
+            <div class="countdown-card">
+              <span class="countdown-value" id="remaining-years">0</span>
+              <span class="countdown-label">Years</span>
+            </div>
+            <div class="countdown-card">
+              <span class="countdown-value" id="remaining-months">0</span>
+              <span class="countdown-label">Months</span>
+            </div>
+            <div class="countdown-card">
+              <span class="countdown-value" id="remaining-days">0</span>
+              <span class="countdown-label">Days</span>
+            </div>
+          </div>
+
+          <div class="countdown-stack-list">
+            <div class="countdown-full-row">
+              <span class="countdown-value" id="remaining-hours">0</span>
+              <span class="countdown-label">Hours</span>
+            </div>
+            <div class="countdown-full-row">
+              <span class="countdown-value" id="remaining-minutes">0</span>
+              <span class="countdown-label">Minutes</span>
+            </div>
+            <div class="countdown-full-row">
+              <span class="countdown-value" id="remaining-seconds">0</span>
+              <span class="countdown-label">Seconds</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Top Menu Section -->
+    <div class="top-menu">
+      <button id="menu-toggle" class="menu-toggle" aria-label="Open menu" aria-expanded="false" type="button">☰</button>
+      <div id="menu-panel" class="menu-panel hidden" role="menu" aria-label="Page menu">
+        <button class="menu-option party-toggle" data-action="party" type="button" aria-pressed="false" aria-label="Toggle party mode">
+          <span class="option-label">🎉 Party mode</span>
+          <span class="switch" aria-hidden="true"><span class="switch-thumb"></span></span>
+        </button>
+        <button class="menu-option" data-action="achievements" type="button">🏆 Achievement list</button>
+      </div>
+    </div>
+
+    <section id="fortune-section" class="fortune-section" aria-label="Fortune cookie">
+      <div class="fortune-box">
+        <div class="section-heading">
+          <span class="mini-title">Your fortune for the year:</span>
+          <h2>Unwrap and crack it open!</h2>
+        </div>
+        <div id="fortune-cookie" class="fortune-cookie fortune-wrapped" role="button" tabindex="0" aria-label="Click to unwrap the fortune cookie">
+          <span class="cookie-wrapper wrapper-left" aria-hidden="true"></span>
+          <span class="cookie-wrapper wrapper-right" aria-hidden="true"></span>
+          <span class="cookie-half cookie-half-left" aria-hidden="true"></span>
+          <span class="cookie-half cookie-half-right" aria-hidden="true"></span>
+        </div>
+        <div id="fortune-slip" class="fortune-slip" aria-live="polite"></div>
+        <button id="new-fortune-cookie" class="fortune-new-btn primary-btn" type="button" hidden>Open a new cookie</button>
+      </div>
+    </section>
+
+    <div id="achievement-panel" class="achievement-panel hidden" role="dialog" aria-modal="true" aria-labelledby="achievement-modal-title">
+      <div class="achievement-modal">
+        <div class="achievement-modal-header">
+          <div>
+            <span class="mini-title">Achievements</span>
+            <h2 id="achievement-modal-title">Your progress</h2>
+          </div>
+          <button id="achievement-close" class="achievement-close" type="button" aria-label="Close achievements">×</button>
+        </div>
+        <div id="achievement-total" class="achievement-total" aria-live="polite"></div>
+        <div id="achievement-list" class="achievement-list" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <section id="message-self-destruct" class="self-destruct-section" aria-label="Message self destruct timer">
+      <div class="self-destruct-box">
+        <h2 class="self-destruct-title">This Message Will Self Destruct.</h2>
+        <div class="bomb-clock" aria-label="Bomb countdown timer">
+          <div class="bomb-lights" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div id="self-destruct-time" class="bomb-display" aria-live="polite">00:10</div>
+        </div>
+        <div class="bomb-wires" aria-label="Cut either wire to stop the timer">
+          <button class="bomb-wire bomb-wire-red" type="button" aria-label="Cut the red wire to stop the timer">
+            <span class="wire-core"></span>
+            <span class="wire-label">RED</span>
+          </button>
+          <button class="bomb-wire bomb-wire-blue" type="button" aria-label="Cut the blue wire to stop the timer">
+            <span class="wire-core"></span>
+            <span class="wire-label">BLUE</span>
+          </button>
+        </div>
+        <button id="solder-toggle" class="solder-toggle" type="button" aria-pressed="false">
+          <span class="solder-icon" aria-hidden="true"></span>
+          <span>⚡ Solder mode ⚡</span>
+        </button>
+      </div>
+    </section>
+
+    <footer>
+      <p>Made with 99% vibe code and 1% my own creativity.</p>
+      <p>This AI use has wasted 1L of water, the amount currently in a human brain.</p>
+    </footer>
+
+  </main>
+
+  <div id="world-end-screen" class="world-end-screen hidden" role="dialog" aria-modal="true" aria-label="The end">
+    <div class="world-end-message">
+      <p class="world-end-love">Love, Luke ❤️</p>
+      <div id="world-end-actions" class="world-end-actions">
+        <button id="time-travel-button" class="world-end-button time-travel-button" type="button">Time Travel</button>
+        <button id="end-it-all-button" class="world-end-button end-it-all-button" type="button">End It All</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Link -->
+  <script src="script.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
