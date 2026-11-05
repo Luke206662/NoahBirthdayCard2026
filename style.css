@@ -52,6 +52,14 @@ body.update-modal-open {
   overflow: hidden;
 }
 
+body.achievement-modal-open .top-menu,
+body.update-modal-open .top-menu,
+body.vbucks-ad-modal-open .top-menu,
+body.world-end-modal-open .top-menu,
+body.vbucks-chaos-active .top-menu {
+  display: none !important;
+}
+
 body.party-mode .card-container {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(20, 18, 52, 0.86));
   border-color: rgba(255, 255, 255, 0.35);

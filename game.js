@@ -29,9 +29,10 @@
     best: 0,
     lastTime: 0,
     spawnTimer: 0,
-    nextSpawnDelay: 1.3,
+    nextSpawnDistance: 420,
     gameSpeed: 420,
     obstacleDelay: 1.25,
+    obstacleSpawnCount: 0,
     obstacles: [],
     flashTimer: 0,
   };
@@ -103,8 +104,7 @@
   }
 
   function scheduleNextSpawn() {
-    state.nextSpawnDelay = randomBetween(1.1, 2.1);
-    state.spawnTimer = 0;
+    state.nextSpawnDistance = randomBetween(750, 1000);
   }
 
   function resetGame() {
@@ -112,9 +112,10 @@
     state.started = false;
     state.score = 0;
     state.spawnTimer = 0;
-    state.nextSpawnDelay = randomBetween(1.1, 2.1);
+    state.nextSpawnDistance = randomBetween(750, 1000);
     state.obstacleDelay = 1.2;
     state.gameSpeed = 420;
+    state.obstacleSpawnCount = 0;
     state.obstacles = [];
     state.flashTimer = 0;
 
@@ -136,9 +137,10 @@
     state.started = true;
     state.score = 0;
     state.spawnTimer = 0;
-    state.nextSpawnDelay = randomBetween(1.1, 2.1);
+    state.nextSpawnDistance = randomBetween(420, 630);
     state.obstacleDelay = 1.2;
     state.gameSpeed = 420;
+    state.obstacleSpawnCount = 0;
     state.obstacles = [];
     state.flashTimer = 0;
 
@@ -187,22 +189,13 @@
   }
 
   function spawnObstacle() {
-    const lastObstacle = state.obstacles[state.obstacles.length - 1];
-    const minGap = 180;
-    const maxGap = 290;
-    let spawnX = canvas.width + 60;
-
-    if (lastObstacle) {
-      const earliestAllowedX = lastObstacle.x + lastObstacle.w + minGap;
-      spawnX = Math.max(canvas.width + 60, earliestAllowedX + randomBetween(0, maxGap - minGap));
-    }
-
     const obstacle = {
-      x: spawnX,
+      x: canvas.width + 60,
       y: groundY,
-      type: Math.random() < 0.5 ? 'poo' : 'cat',
+      type: Math.random() < 0.75 ? 'poo' : 'cat',
       passed: false,
     };
+    state.obstacleSpawnCount += 1;
 
     if (obstacle.type === 'poo') {
       obstacle.w = 60 * GROUND_OBJECT_SCALE;
@@ -233,11 +226,12 @@
   function update(dt) {
     if (!state.started || !state.running) return;
 
-    state.spawnTimer += dt;
-    state.gameSpeed = Math.min(980, state.gameSpeed + dt * 22);
+    state.gameSpeed = 420 + state.obstacleSpawnCount * 32;
+    state.spawnTimer += state.gameSpeed * dt;
 
-    if (state.spawnTimer >= state.nextSpawnDelay) {
+    if (state.spawnTimer >= state.nextSpawnDistance) {
       spawnObstacle();
+      state.spawnTimer -= state.nextSpawnDistance;
       scheduleNextSpawn();
     }
 

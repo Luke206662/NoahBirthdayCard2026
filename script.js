@@ -460,11 +460,13 @@ function triggerWorldExplosion() {
     worldEndScreen?.classList.remove('hidden');
     worldEndScreen?.classList.add('fade-in');
     worldEndActions?.classList.remove('hidden');
+    document.body.classList.add('world-end-modal-open');
   }, 900);
 }
 
 timeTravelButton?.addEventListener('click', () => {
   worldEndScreen?.classList.add('hidden');
+  document.body.classList.remove('world-end-modal-open');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
@@ -629,10 +631,13 @@ window.addEventListener('DOMContentLoaded', () => {
         showAchievementToast('update');
 
         window.setTimeout(() => {
-          vbucksAdUnlockedAt = Date.now() + 30_000;
+          vbucksAdUnlockedAt = Date.now() + 20_000;
           updatePopup.classList.add('hidden');
           document.body.classList.remove('update-modal-open');
           showAchievementToast('open');
+          if (typeof window.startAdTimer === 'function') {
+            window.startAdTimer();
+          }
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }, 450);
       }
@@ -898,14 +903,20 @@ function startAdTimer() {
   gameState.paused = false;
 
   const remainingCooldown = Math.max(0, vbucksAdUnlockedAt - Date.now());
-  const randomizedDelay = 12_000 + Math.random() * 18_000;
-  const delay = Math.max(randomizedDelay, remainingCooldown);
+  const delay = remainingCooldown > 0
+    ? remainingCooldown
+    : 20_000 + Math.floor(Math.random() * 20_001);
+
   adTimerHandle = setTimeout(() => {
     const latestState = window.__birthdayGame || {};
     if (latestState && !latestState.playing) {
       showAdPopup();
     }
-    startAdTimer();
+    if (!adOverlay.classList.contains('hidden')) {
+      gameState.paused = true;
+    } else {
+      startAdTimer();
+    }
   }, delay);
 }
 
@@ -916,11 +927,13 @@ function showAdPopup() {
   }
 
   adOverlay.classList.remove('hidden');
+  document.body.classList.add('vbucks-ad-modal-open');
   return true;
 }
 
 function hideAdPopup() {
   adOverlay.classList.add('hidden');
+  document.body.classList.remove('vbucks-ad-modal-open');
 }
 
 function startVbucksChaos() {
@@ -934,6 +947,7 @@ function startVbucksChaos() {
     chaosScene.classList.add('hidden');
     document.body.classList.remove('vbucks-chaos-active');
     createChaosTokens();
+    startAdTimer();
   }, 5000);
 }
 
@@ -948,30 +962,10 @@ document.addEventListener('pointerdown', (event) => {
   }
 });
 
-adOverlay.querySelector('.vbucks-close')?.addEventListener('click', hideAdPopup);
+adOverlay.querySelector('.vbucks-close')?.addEventListener('click', () => {
+  hideAdPopup();
+  startAdTimer();
+});
 adOverlay.querySelector('.vbucks-button')?.addEventListener('click', startVbucksChaos);
-
-
-function scheduleRandomAd() {
-  clearAdTimer();
-
-  if (!Number.isFinite(vbucksAdUnlockedAt)) {
-    return;
-  }
-  if (!window.__birthdayGame || !window.__birthdayGame.started || window.__birthdayGame.paused) {
-    return;
-  }
-
-  const minMs = 20_000;
-  const maxMs = 40_000;
-  const remainingCooldown = Math.max(0, vbucksAdUnlockedAt - Date.now());
-  const randomizedDelay = Math.floor(Math.random() * (maxMs - minMs + 1)) + minMs;
-  const delay = Math.max(randomizedDelay, remainingCooldown);
-
-  adTimerHandle = setTimeout(() => {
-    if (window.__birthdayGame && window.__birthdayGame.started && !window.__birthdayGame.paused) {
-      showAdPopup();
-      scheduleRandomAd();
-    }
-  }, delay);
-}
+window.startAdTimer = startAdTimer;
+window.pauseAdTimer = pauseAdTimer;
